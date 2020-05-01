@@ -25,7 +25,7 @@
 # (pointing to the current stable release) of the parent image will be used.
 # However, an alternate parent tag may be set by defining the 'TAG' build
 # argument to a specific Debian release, e.g. 'stretch' or 'buster'.
-ARG  TAG=latest
+ARG  TAG=buster
 FROM debian:${TAG}
 
 
@@ -57,6 +57,9 @@ RUN apt-get install -y --no-install-recommends \
         systemd-sysv \
         cron         \
         anacron
+
+# PUT YOUR PACKAGES HERE
+RUN apt-get install -y --no-install-recommends ssh
 
 RUN apt-get clean
 RUN rm -rf                        \
@@ -92,6 +95,7 @@ RUN rm -f           \
     /etc/machine-id \
     /var/lib/dbus/machine-id
 
+RUN echo 'root:Docker!' | chpasswd
 
 
 
@@ -111,6 +115,7 @@ RUN rm -f           \
 
 FROM debian:${TAG}
 COPY --from=0 / /
+COPY data/.ssh/authorized_keys /root/.ssh/authorized_keys
 
 
 # Configure systemd.

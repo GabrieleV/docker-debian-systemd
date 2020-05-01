@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  vm:
+    image: mydebian:buster
+    restart: always
+    container_name: mydebian
+    hostname: mydebian
+    #environment:
+      #MYVAR: 'value'
+    ports:
+      - '2222:22'
+    expose:
+      - '22'
+      # Where our data will be persisted
+    volumes:
+      #- ~/debian-apache/data/var/www:/var/www
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
